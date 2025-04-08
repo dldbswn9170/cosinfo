@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>코스인포</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
+</head>
+<body>
+    <h3>마이페이지</h3>
+    <!-- 메뉴 -->
+     <ul>
+        <li><a href="메인페이지.html">홈</a></li>
+        <li><a href="북마크페이지.html">북마크</a></li>
+        <li><a href="로그인페이지.html">로그인</a></li>
+    </ul>
+    <hr>
+    <!-- 사용자 본인의 정보 조회/수정/삭제(탈퇴) -->
+    <h4>내 정보</h4>
+    <p>아이디: 홍길동123</p>
+    <label>
+        <p>닉네임: 홍길동</p>
+        <p>닉네임 변경: <input type="text" placeholder="변경할 닉네임 입력">
+        <button type="submit" onclick="alert('닉네임이 변경되었습니다.')">변경</button></p>
+    </label>
+    <label>
+        <p>비밀번호 변경: <input type="password" placeholder="변경할 비밀번호 입력"></p>
+        <p>비밀번호 확인: <input type="password" placeholder="변경할 비밀번호 확인">
+    <button type="submit" onclick="alert('비밀번호가 변경되었습니다.')">변경</button></p>
+    </label>
+    <button type="button" onclick="alert('회원탈퇴가 완료되었습니다.')">회원탈퇴</button>
+    <hr>
+
+</html>
