@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cosinfo</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <script defer src="script.js"></script>
+</head>
+<body>
+    <div class="menu-bar-wrap">
+        <div class="menu-bar">
+            <h3>cosinfo</h3>
+            <div class="menu-bar-inner">
+                <a href="Mypage.html">마이페이지</a>
+                <a href="Login.html">로그인</a>
+            </div>
+        </div>
+    </div>
+    <div id="search-box">
+        <h1>어떤 성분을 찾고 있나요?</h1>
+        <div id="search-bar">
+            <input type="search" id="search" placeholder="성분명 입력...">
+            <button type="submit" onclick="sendMessage()" style="height: 40px;">
+                    <i class="fa-solid fa-magnifying-glass" style="color: #000;"></i>
+            </button>
+        </div>
+        <div id="chatbox"></div>
+    </div>
+</body>
+</html>
