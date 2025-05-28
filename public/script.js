@@ -2,14 +2,10 @@ async function sendMessage() {
   const userInput = document.getElementById("search").value;
   if (!userInput.trim()) return;
 
-  // 사용자 메시지 출력
   addMessage(userInput, 'user');
-
-  // 입력창 비우기
   document.getElementById("search").value = '';
 
   try {
-    // GPT API 호출
     const response = await fetch('/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -17,8 +13,6 @@ async function sendMessage() {
     });
 
     const data = await response.json();
-
-    // GPT 응답 출력
     addMessage(data.reply, 'bot');
   } catch (error) {
     console.error('Error:', error);
