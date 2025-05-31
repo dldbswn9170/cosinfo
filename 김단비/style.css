@@ -1,0 +1,256 @@
+body{
+    background-color: #fff;
+}
+
+a { text-decoration: none; color: black; }
+a:visited { text-decoration: none; }
+a:hover { text-decoration: none; }
+a:focus { text-decoration: none; }
+a:hover, a:active { text-decoration: none; }
+
+button {
+    border: 0;
+    background-color: transparent;
+}
+
+input:focus {outline: none;}
+
+.menu-bar-wrap{
+    padding-left: 3rem;
+    width: 100;
+}
+
+.menu-bar{
+    width: 100;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu-bar-inner > a{
+    margin-right: 3rem;
+}
+
+#search-box{
+    max-width: 500px;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    align-items: center;
+    display: block;
+    justify-items: center;
+}
+
+#search-bar{
+    border: 1px lightgrey solid;
+    width: 500px;
+    height: 45px;
+    border-radius: 50px;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-inline-start: 15px;
+    padding-inline-end: 15px;
+}
+
+#search{
+    border: none;
+    width: 100%;
+    height: 100%;
+}
+
+#chatbox {
+    margin-top: 20px;
+    padding: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    width: 500px;
+}
+
+/* mypage */
+/* 프로필 영역 */
+.profile-section {
+    margin-top: 80px;
+    text-align: center;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  
+  .profile-section i {
+    margin-bottom: 20px;
+    color: #999;
+  }
+  
+  .greeting {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 5px 0;
+  }
+  
+  .email {
+    color: #555;
+    font-size: 14px;
+  }
+  
+  .profile-buttons {
+    margin-top: 20px;
+  }
+  
+  .profile-buttons button {
+    padding: 10px 24px;
+    margin: 0 8px;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    background-color: white;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .profile-buttons button.active {
+    background-color: #111;
+    color: white;
+    border: none;
+  }
+  
+  /* 카드 영역 */
+  .card-section {
+    margin: 60px auto;
+    max-width: 960px;
+    padding: 30px;
+    background-color: #f8f8f8;
+    border-radius: 12px;
+  }
+  
+  .card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    position: relative;
+    max-width: 260px;
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .card-header button {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .card-content {
+    font-size: 13px;
+    color: #333;
+    margin-top: 10px;
+  }
+
+  .edit-section {
+      margin: 60px auto;
+    max-width: 960px;
+    padding: 30px;
+    background-color: #f8f8f8;
+    border-radius: 12px;
+    }
+
+    .edit-section input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 4px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .edit-section button {
+      margin-top: 20px;
+      padding: 10px 24px;
+      border: none;
+      border-radius: 25px;
+      background-color: #111;
+      color: white;
+      cursor: pointer;
+    }
+  
+    /* login */
+    /* 로그인 박스 전체 */
+.login-box {
+    width: 360px;
+    margin: 120px auto;
+    padding: 40px 30px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  
+  /* 입력 필드 (이메일 / 비밀번호) */
+  .login-box input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+  
+  /* 로그인 버튼 */
+  .login-box button {
+    width: 100%;
+    padding: 12px;
+    background-color: #111;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .login-box button:hover {
+    background-color: #333;
+  }
+  
+  /* 하단 링크 텍스트 */
+  .login-links {
+    margin-top: 14px;
+    font-size: 13px;
+    color: #333;
+    text-align: left;
+  }
+  
+  .login-links a {
+    display: inline-block;
+    color: #333;
+    text-decoration: underline;
+    margin-bottom: 5px;
+  }
+  
+  .menu-bar-wrap{
+    padding-left: 3rem;
+    width: 100;
+}
+
+.menu-bar{
+    width: 100;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu-bar-inner > a{
+    margin-right: 3rem;
+}
+  
