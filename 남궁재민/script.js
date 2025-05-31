@@ -1,52 +1,57 @@
-// 회원 클래스
-class User {
-    constructor(email, password) {
-        this.email = email;
-        this.password = password;
-    }
-}
-// 회원 객체
-const user = new User("cosinfo@example.com", "1234");
+// 페이지 내용 전부 로드시 아래 코드 실행
+document.addEventListener("DOMContentLoaded", function () {
+    // 지금 보고 있는 페이지 구분
+    const pageId = document.body.id;
 
-// 회원가입
-function register() {
-    user.email = document.getElementById('email').value;
-    user.password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('confirm-password').value;
+    // 회원가입 페이지일 시 실행
+    if (pageId === "register-page") {
+        const form = document.querySelector(".login-form");
+        if (!form) return;
 
-    if (user.password !== confirmPassword) {
-        alert("비밀번호가 일치하지 않습니다.");
-        return;
-    }
-}
-// 비밀번호 찾기
-function findPassword() {
-    const email = document.getElementById('email').value;
+        form.addEventListener("submit", function (event) {
+            event.preventDefault(); // 페이지 새로고침 막기
 
-    if (email === user.email) {
-        alert(`비밀번호는 [${user.password}]입니다.`);
-    }
-    else {
-        alert("등록된 이메일이 아닙니다.");
-    }
-}
+            const formData = new FormData(form);
 
-// 로그인
-function login() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+            fetch("register.php", {
+                method: "POST",
+                body: formData,
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data); // 서버에서 온 메시지 보여주기
 
-    if (email === user.email && password === user.password) {
-        alert("로그인 성공");
-        location.href = "Main.html"; // 로그인 성공 시 이동할 페이지
+                if (data.includes("성공")){ // register.php의 회원가입 성공
+                    window.location.href = "Login.html"; // 회원가입 성공 시 로그인 페이지로 이동
+                }
+            })
+            .catch(error => {
+                alert("에러가 발생했어요: " + error);
+            });
+        });
+
+    // 로그인 페이지일 시 실행
+    } else if (pageId === "login-page") {
+        const form = document.querySelector(".login-form");
+        if (!form) return;
+
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const formData = new FormData(form);
+
+            fetch("login.php", {
+                method: "POST",
+                body: formData,
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data); // 서버에서 온 메시지 보여주기
+                window.location.href = "index.html"; // 로그인 후 메인 페이지로 이동
+            })
+            .catch(error => {
+                alert("에러가 발생했어요: " + error);
+            });
+        });
     }
-    else if (email === user.email) {
-        alert("등록되지 않은 이메일입니다.");
-    }
-    else if (password === user.password) {
-        alert("비밀번호가 틀렸습니다.");
-    }
-    else {
-        alert("이메일과 비밀번호가 틀렸습니다.");
-    }
-}
+});
