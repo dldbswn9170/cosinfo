@@ -47,11 +47,37 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.text())
             .then(data => {
                 alert(data); // 서버에서 온 메시지 보여주기
-                window.location.href = "index.html"; // 로그인 후 메인 페이지로 이동
+
+                if (data.includes("성공")){
+                    window.location.href = "index.html"; // 로그인 후 메인 페이지로 이동
+                }
             })
             .catch(error => {
                 alert("에러가 발생했어요: " + error);
             });
         });
-    }
+    // 비밀번호 찾기 페이지일 시 실행
+    } else if (pageId === "find-password-page") {
+        const form = document.querySelector(".login-form");
+        const result = document.getElementById("result");
+
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
+            
+            const formData = new FormData(form);
+            
+            fetch("find_password.php", {
+            method: "POST",
+            body: formData,
+        })
+        .then(response => response.text())
+        .then(data => {
+            result.textContent = data;
+        })
+        .catch((error) => {
+            result.textContent = "에러가 발생했어요.";
+            console.error(error);
+        });
+    });
+}
 });
