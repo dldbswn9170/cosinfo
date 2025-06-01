@@ -20,7 +20,7 @@ if ($password !== $confirm_Password) {
 }
 
 // 중복 확인
-$sql = "SELECT * FROM users WHERE email = ?";
+$sql = "SELECT * FROM users WHERE user_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $email);
 $stmt->execute();
@@ -32,13 +32,13 @@ if ($result->num_rows > 0) { // 중복되는 튜플이 1개라도 있는지 확�
 }
 
 // 회원가입
-$hashed_password = password_hash($password, PASSWORD_DEFAULT);
-$sql = "INSERT INTO users (email, password) VALUES ('$email', '$hashed_password')";
+// $hashed_password = password_hash($password, PASSWORD_DEFAULT); // 비밀번호를 암호화 해줌
+$sql = "INSERT INTO users (user_id, password, username) VALUES (?, ?, ?)";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("ss", $email, $hashed_password);
+$stmt->bind_param("sss", $email, $password, $email); // 3번째 입력값 'email' = 임시 'username'
 
 if ($stmt->execute()) {
-    echo "회원가입 성공!";
+    echo "회원가입 성공";
 } else {
     echo "회원가입 실패";
 }

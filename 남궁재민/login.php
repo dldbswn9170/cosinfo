@@ -7,7 +7,7 @@ $email = $_POST['email'];
 $password = $_POST['password'];
 
 // 이메일로 사용자 검색
-$sql = "SELECT * FROM users WHERE email='$email'";
+$sql = "SELECT * FROM users WHERE user_id = '$email'"; // user_id를 email로 가져옴
 $result = $conn->query($sql);
 
 // 사용자가 존재하는지 확인
