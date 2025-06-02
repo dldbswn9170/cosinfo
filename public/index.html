@@ -22,7 +22,7 @@
     <div id="search-box">
         <h1>어떤 성분을 찾고 있나요?</h1>
         <div id="search-bar">
-            <input type="search" id="search" placeholder="성분명 입력...">
+            <input type="search" id="search" onkeydown="if(event.key === 'Enter') redirectToChat()" placeholder="성분명 입력...">
             <!-- 검색 버튼 -->
             <button type="submit" onclick="redirectToChat()" style="height: 40px;">
               <i class="fa-solid fa-magnifying-glass" style="color: #000;"></i>
@@ -32,7 +32,6 @@
             function redirectToChat() {
               const input = document.getElementById("search").value.trim();
               if (!input) return;
-              // 쿼리 파라미터로 전달
               window.location.href = `gpt-chat.html?query=${encodeURIComponent(input)}`;
             }
             </script>
