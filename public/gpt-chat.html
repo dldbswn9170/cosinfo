@@ -19,8 +19,15 @@
     </div>
   </div>
 
-  <div id="chatbox"></div>
-  <input type="text" id="search" style="display:none;"> <!-- 숨겨진 입력창 -->
+  <!-- 채팅 화면 -->
+  <div class="chat-container">
+    <p style="text-align: center;">이 답변은 AI에 의해 생성되었으며 정보에 오류가 있을 수도 있습니다</p>
+    <div id="chatbox" class="chatbox"></div>
+    <div class="input-area">
+      <input type="text" id="search" placeholder="메시지를 입력하세요..." onkeydown="if(event.key === 'Enter') sendMessage()" />
+      <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
 
   <script>
     function getQueryParam(key) {
