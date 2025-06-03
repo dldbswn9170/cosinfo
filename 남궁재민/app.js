@@ -73,7 +73,6 @@ app.post('/find-password', async (req, res) => {
     if (rows.length === 0) {
       return res.send('등록되지 않은 이메일입니다.');
     }
-    // 실제 서비스라면 비밀번호 보여주면 안 되고, 임시 비밀번호 발송이나 비밀번호 재설정 링크를 보내는게 안전
     const user = rows[0];
     res.send(`비밀번호: ${user.password}`);
   } catch (err) {
