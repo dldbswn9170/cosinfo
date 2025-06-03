@@ -89,3 +89,21 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log(`서버가 http://localhost:${port} 에서 실행 중`);
 });
+
+// 마이페이지 사용자 정보 조회
+app.get('/user', async (req, res) => {
+  const userId = req.query.userId;
+  if (!userId) {
+    return res.status(400).send('userId 필요');
+  }
+  try {
+    const [rows] = await db.query('SELECT * FROM users WHERE user_id = ?', [userId]);
+    if (rows.length === 0) {
+      return res.status(404).send('사용자를 찾을 수 없습니다.');
+    }
+    res.json(rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('서버 오류');
+  }
+});
