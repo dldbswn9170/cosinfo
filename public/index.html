@@ -14,15 +14,15 @@
       <div class="menu-bar">
         <a href="index.html"><h3>cosinfo</h3></a>
         <div class="menu-bar-inner">
-          <a href="mypage.html">마이 페이지</a>
-          <a href="Login.html">로그인</a>
+          <a href="mypage.html" id="mypage-link">마이 페이지</a>
+          <a href="login.html" id="login-link">로그인</a>
         </div>
       </div>
     </div>
     <div id="search-box">
         <h1>어떤 성분을 찾고 있나요?</h1>
         <div id="search-bar">
-            <input type="search" id="search" onkeydown="if(event.key === 'Enter') redirectToChat()" placeholder="성분명 입력...">
+            <input type="search" id="search" placeholder="성분명 입력...">
             <!-- 검색 버튼 -->
             <button type="submit" onclick="redirectToChat()" style="height: 40px;">
               <i class="fa-solid fa-magnifying-glass" style="color: #000;"></i>
@@ -32,10 +32,24 @@
             function redirectToChat() {
               const input = document.getElementById("search").value.trim();
               if (!input) return;
+              // 쿼리 파라미터로 전달
               window.location.href = `gpt-chat.html?query=${encodeURIComponent(input)}`;
             }
             </script>
         </div>
     </div>
+    <script>
+      document.getElementById("mypage-link").addEventListener("click", function (e) {
+        e.preventDefault(); // 기본 링크 이동 막기
+
+        const isLoggedIn = localStorage.getItem("isLoggedIn");
+        if (isLoggedIn === "true") {
+          window.location.href = "mypage.html";
+        } else {
+          alert("로그인이 필요합니다.");
+          window.location.href = "login.html";
+        }
+      });
+    </script>
 </body>
 </html>
