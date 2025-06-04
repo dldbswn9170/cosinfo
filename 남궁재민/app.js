@@ -103,4 +103,28 @@ app.get('/user', async (req, res) => {
   }
 });
 
+// 사용자 정보 수정
+app.post('/user', async (req, res) => {
+  const { old_user_id, user_id, username, password, email } = req.body;
+  try {
+    const [users] = await db.query('SELECT * FROM users WHERE user_id = ?', [old_user_id]);
+    if (users.length === 0) return res.status(404).json({ message: '사용자를 찾을 수 없습니다.' });
+
+    const [dup] = await db.query(
+      'SELECT * FROM users WHERE (user_id = ? OR email = ?) AND user_id != ?',
+      [user_id, email, old_user_id]
+    );
+    if (dup.length > 0) return res.status(409).json({ message: '중복된 정보가 있습니다.' });
+
+    await db.query(
+      'UPDATE users SET user_id = ?, username = ?, password = ?, email = ? WHERE user_id = ?',
+      [user_id, username, password, email, old_user_id]
+    );
+    res.json({ message: '정보가 성공적으로 수정되었습니다!', new_user_id: user_id });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: '정보 수정 중 오류가 발생했습니다.' });
+  }
+});
+
 module.exports = app;
