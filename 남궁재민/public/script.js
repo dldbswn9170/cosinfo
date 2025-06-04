@@ -1,3 +1,61 @@
+async function sendMessage() {
+  const userInput = document.getElementById("search").value;
+  if (!userInput.trim()) return;
+
+  addMessage(userInput, 'user');
+  document.getElementById("search").value = '';
+
+  try {
+    const response = await fetch('/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: userInput })
+    });
+
+    const data = await response.json();
+    addMessage(data.reply, 'bot');
+  } catch (error) {
+    console.error('Error:', error);
+    addMessage("오류가 발생했습니다. 다시 시도해주세요.", 'bot');
+  }
+}
+
+function addMessage(text, type, responseId = null) {
+  const chatbox = document.getElementById("chatbox");
+
+  // wrapper div에 user or bot 클래스 추가해서 좌우 정렬 담당
+  const wrapper = document.createElement("div");
+  wrapper.className = `message-wrapper ${type}`;
+
+  // 메시지 박스 생성
+  const msg = document.createElement("div");
+  msg.className = `message ${type}`;
+  msg.textContent = text;
+
+  wrapper.appendChild(msg);
+
+  if (type === 'bot') {
+    // 북마크 아이콘 버튼 생성
+    const bookmarkBtn = document.createElement("button");
+    bookmarkBtn.innerHTML = '<i class="fa-regular fa-bookmark"></i>';
+    bookmarkBtn.className = "bookmark-btn";
+    bookmarkBtn.title = "북마크";
+
+    bookmarkBtn.addEventListener('click', () => {
+      if (responseId) {
+        bookmarkResponse(responseId);
+      } else {
+        alert("북마크할 응답 ID가 없습니다.");
+      }
+    });
+
+    wrapper.appendChild(bookmarkBtn);
+  }
+
+  chatbox.appendChild(wrapper);
+  chatbox.scrollTop = chatbox.scrollHeight;
+}
+
 // 비밀번호 찾기
 const findPasswordForm = document.getElementById('findPasswordForm');
 if (findPasswordForm) {
@@ -66,6 +124,8 @@ if (loginForm) {
     const form = e.target;
     const user_id = form.user_id.value;
     const password = form.password.value;
+    const redirect = form.redirect ? form.redirect.value : "index.html";
+
 
     if (!user_id || !password) {
       return alert('아이디와 비밀번호를 입력하세요.');
@@ -83,7 +143,7 @@ if (loginForm) {
       if (text.trim().includes("로그인 성공")) {
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('userId', user_id);
-        location.href = "index.html";
+        location.href = redirect;  // 성공시 redirect 페이지로 이동 ex)mypage.html
       }
     } catch (err) {
       alert('로그인 중 오류 발생');
@@ -94,6 +154,10 @@ if (loginForm) {
 // 로그인 상태 및 로그아웃 처리
 document.addEventListener('DOMContentLoaded', () => {
   const loginLink = document.getElementById('login-link');
+  const params = new URLSearchParams(window.location.search);
+  const redirectValue = params.get('redirect') || "index.html";
+  const redirectInput = document.getElementById('redirect');
+  if (redirectInput) redirectInput.value = redirectValue;
   if (loginLink) {
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     if (isLoggedIn) {

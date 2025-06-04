@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>cosinfo</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+  <script defer src="script.js"></script>
+</head>
+<body onload="handleRedirectedQuery()">
+  <div class="menu-bar-wrap">
+    <div class="menu-bar">
+      <a href="index.html"><h3>cosinfo</h3></a>
+      <div class="menu-bar-inner">
+        <a href="mypage.html">마이 페이지</a>
+        <a href="login.html" id="login-link">로그인</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 채팅 화면 -->
+  <div class="chat-container">
+    <p style="text-align: center;">이 답변은 AI에 의해 생성되었으며 정보에 오류가 있을 수도 있습니다</p>
+    <div id="chatbox" class="chatbox"></div>
+    <div class="input-area">
+      <input type="text" id="search" placeholder="메시지를 입력하세요..." onkeydown="if(event.key === 'Enter') sendMessage()" />
+      <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <script>
+    function getQueryParam(key) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(key);
+    }
+
+    function handleRedirectedQuery() {
+      const query = getQueryParam('query');
+      if (query) {
+        document.getElementById("search").value = query;
+        sendMessage();
+      }
+    }
+  </script>
+</body>
+</html>

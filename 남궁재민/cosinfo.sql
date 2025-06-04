@@ -10,6 +10,8 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+-- users 테이블에 이메일 컬럼 추가
+ALTER TABLE users ADD COLUMN email VARCHAR(255) NOT NULL;
 select * from users;
 -- 성분 테이블
 CREATE TABLE ingredients (
