@@ -172,4 +172,10 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   }
+  const userIdFromNaver = new URLSearchParams(window.location.search).get('user_id');
+  if (userIdFromNaver) {
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('userId', userIdFromNaver);
+    window.location.replace(window.location.pathname);
+  }
 });
