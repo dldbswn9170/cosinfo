@@ -1,98 +1,143 @@
-document.addEventListener('DOMContentLoaded', () => {
-  // 회원가입 처리
-  const registerForm = document.getElementById('register-form');
+async function sendMessage() {
+  const userInput = document.getElementById("search").value;
+  if (!userInput.trim()) return;
 
-  if (registerForm) {
-    registerForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
+  addMessage(userInput, 'user');
+  document.getElementById("search").value = '';
 
-      const user_id = registerForm.user_id.value;
-      const username = registerForm.username.value;
-      const password = registerForm.password.value;
-      const email = registerForm.email.value;
-
-      if (!user_id || !username || !password || !email) {
-        return alert('모든 값을 입력하세요.');
-      }
-
-      try {
-        const res = await fetch('/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ user_id, username, password, email }),
-        });
-
-        const text = await res.text();
-        alert(text);
-
-        if (res.status === 200) {
-          location.href = 'Login.html';
-        }
-      } catch (err) {
-        console.error('회원가입 오류:', err);
-        alert('회원가입 중 오류 발생');
-      }
+  try {
+    const response = await fetch('/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: userInput })
     });
+
+    const data = await response.json();
+    addMessage(data.reply, 'bot');
+  } catch (error) {
+    console.error('Error:', error);
+    addMessage("오류가 발생했습니다. 다시 시도해주세요.", 'bot');
+  }
+}
+
+function addMessage(text, type, responseId = null) {
+  const chatbox = document.getElementById("chatbox");
+  const wrapper = document.createElement("div");
+  wrapper.className = `message-wrapper ${type}`;
+
+  const msg = document.createElement("div");
+  msg.className = `message ${type}`;
+  msg.textContent = text;
+
+  wrapper.appendChild(msg);
+
+  if (type === 'bot') {
+    const bookmarkBtn = document.createElement("button");
+    bookmarkBtn.innerHTML = '<i class="fa-regular fa-bookmark"></i>';
+    bookmarkBtn.className = "bookmark-btn";
+    bookmarkBtn.title = "북마크";
+    bookmarkBtn.onclick = () => {
+      if (responseId) {
+        bookmarkResponse(responseId);
+      } else {
+        alert("북마크할 응답 ID가 없습니다.");
+      }
+    };
+
+    wrapper.appendChild(bookmarkBtn);
   }
 
-  // 로그인 처리
-  const loginForm = document.getElementById('login-form');
+  chatbox.appendChild(wrapper);
+  chatbox.scrollTop = chatbox.scrollHeight;
+}
 
-  if (loginForm) {
-    loginForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const user_id = loginForm.user_id.value;
-      const password = loginForm.password.value;
-
-      if (!user_id || !password) {
-        return alert('아이디와 비밀번호를 입력하세요.');
-      }
-
-      try {
-        const res = await fetch('/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ user_id, password }),
-        });
-
-        const text = await res.text();
-        alert(text);
-
-        if (res.status === 200) {
-          localStorage.setItem('isLoggedIn', 'true');
-          localStorage.setItem('userId', user_id);
-          location.href = 'index.html';
-        }
-      } catch (err) {
-        console.error('로그인 오류:', err);
-        alert('로그인 중 오류 발생');
-      }
+async function bookmarkResponse(responseId) {
+  try {
+    const res = await fetch('/bookmark', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ response_id: responseId })
     });
-  }
-});
 
-document.addEventListener('DOMContentLoaded', () => {
-  const loginLink = document.getElementById('login-link');
-
-  if (loginLink) {
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-
-    if (isLoggedIn) {
-      loginLink.textContent = '로그아웃';
-      loginLink.href = '#';
-      loginLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        localStorage.removeItem('isLoggedIn');
-        localStorage.removeItem('userId');
-        alert('로그아웃 되었습니다.');
-        location.reload(); // 또는 location.href = 'Main.html';
-      });
+    if (res.ok) {
+      alert("북마크가 저장되었습니다!");
+    } else {
+      alert("북마크 저장에 실패했습니다.");
     }
+  } catch (err) {
+    console.error('Bookmark Error:', err);
+    alert("서버 에러가 발생했습니다.");
   }
+}
+
+// 인기 검색어, 자동 완성
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const res = await fetch('/api/popular-ingredients');
+    const topIngredients = await res.json();
+
+    // 순위 리스트 삽입
+    const list = document.getElementById('ingredient-list');
+    list.innerHTML = ''; // 기존 내용 초기화
+    topIngredients.forEach((item) => {
+      const li = document.createElement('li');
+      li.textContent = item;
+      list.appendChild(li);
+    });
+
+  } catch (err) {
+    console.error('인기 성분 불러오기 실패:', err);
+    document.getElementById('top-ingredient').textContent = '불러오기 실패';
+  }
+  
+  // 자동 완성
+  const searchInput = document.getElementById('search');
+  const suggestionBox = document.getElementById('suggestion-box');
+
+  searchInput.addEventListener('input', async () => {
+    const keyword = searchInput.value.trim();
+
+    // 입력값 없으면 박스 숨김
+    if (!keyword) {
+      suggestionBox.style.display = 'none';
+      suggestionBox.innerHTML = '';
+      return;
+    }
+
+    // 서버에 요청
+    try {
+      const res = await fetch(`/api/suggestions?keyword=${encodeURIComponent(keyword)}`);
+      const suggestions = await res.json();
+
+      // 결과가 없으면 숨김
+      if (suggestions.length === 0) {
+        suggestionBox.style.display = 'none';
+        suggestionBox.innerHTML = '';
+        return;
+      }
+
+      // 결과가 있으면 박스 표시
+      suggestionBox.innerHTML = '';
+      suggestions.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'suggestion-item';
+        div.textContent = item;
+        div.addEventListener('click', () => {
+          searchInput.value = item;
+          suggestionBox.style.display = 'none';
+        });
+        suggestionBox.appendChild(div);
+      });
+
+      suggestionBox.style.display = 'block';
+    } catch (err) {
+      console.error('자동완성 오류:', err);
+      suggestionBox.style.display = 'none';
+    }
+  });
 });
+
+
+
+
 
